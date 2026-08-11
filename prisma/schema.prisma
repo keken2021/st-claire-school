@@ -1,0 +1,130 @@
+// St. Claire content + inquiry analytics schema.
+//
+// Times are stored as dayOfWeek + minutes-from-midnight rather than DateTime,
+// because class times are recurring wall-clock patterns in Asia/Manila, not
+// instants. The Philippines observes no daylight saving, so this is unambiguous.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Program {
+  id          String  @id
+  slug        String  @unique
+  name        String
+  category    String
+  description String
+  detail      String?
+  ageGroup    String
+  minAge      Int
+  skillLevel  String
+  duration    String
+  icon        String
+  interest    String
+  image       String?
+  imageWidth  Int?
+  imageHeight Int?
+  sortOrder   Int     @default(0)
+  isActive    Boolean @default(true)
+
+  slots   ClassSlot[]
+  tuition TuitionTier[]
+  events  InquiryEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClassSlot {
+  id            String  @id @default(cuid())
+  program       Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  programId     String
+  dayOfWeek     Int
+  startMinutes  Int
+  durationMin   Int     @default(60)
+  capacity      Int
+  enrolledCount Int     @default(0)
+  isActive      Boolean @default(true)
+  updatedBy     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([programId, isActive])
+}
+
+model TuitionTier {
+  id        String  @id @default(cuid())
+  program   Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+  programId String
+  name      String
+  amount    Int
+  cadence   String
+  note      String?
+  sortOrder Int     @default(0)
+
+  updatedAt DateTime @updatedAt
+
+  @@index([programId])
+}
+
+model Testimonial {
+  id         String  @id
+  name       String
+  role       String
+  program    String
+  quote      String
+  rating     Int     @default(5)
+  avatarSeed String
+  isVisible  Boolean @default(true)
+  sortOrder  Int     @default(0)
+
+  updatedAt DateTime @updatedAt
+}
+
+model GalleryItem {
+  id        String  @id
+  src       String
+  category  String
+  caption   String
+  width     Int
+  height    Int
+  isVisible Boolean @default(true)
+  sortOrder Int     @default(0)
+
+  updatedAt DateTime @updatedAt
+}
+
+/// One anonymous funnel event. Deliberately holds no personal data: no names,
+/// no contact details, and child age only as a coarse bucket.
+model InquiryEvent {
+  id           String   @id @default(cuid())
+  type         String
+  source       String
+  program      Program? @relation(fields: [programId], references: [id], onDelete: SetNull)
+  programId    String?
+  path         String?
+  ageBucket    String?
+  interest     String?
+  experience   String?
+  schedulePref String?
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([programId])
+  @@index([type])
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         String   @default("staff")
+  createdAt    DateTime @default(now())
+}
