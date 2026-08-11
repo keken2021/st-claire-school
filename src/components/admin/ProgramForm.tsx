@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import type { Program } from "@/types";
-import { idleState, updateProgram } from "@/app/admin/actions";
+import { idleState } from "@/app/admin/action-state";
+import { updateProgram } from "@/app/admin/actions";
 import { Card, Field, FormStatus, SectionTitle, SubmitButton, TextArea, TextInput } from "./ui";
 
 export default function ProgramForm({ program }: { program: Program }) {

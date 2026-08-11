@@ -3,7 +3,8 @@
 import { useActionState } from "react";
 import { Trash2 } from "lucide-react";
 import type { TuitionTier } from "@/types";
-import { deleteTuitionTier, idleState, upsertTuitionTier } from "@/app/admin/actions";
+import { deleteTuitionTier, upsertTuitionTier } from "@/app/admin/actions";
+import { idleState } from "@/app/admin/action-state";
 import { Card, Field, FormStatus, SectionTitle, SubmitButton, TextInput } from "./ui";
 
 export default function TuitionEditor({

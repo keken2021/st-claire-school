@@ -25,5 +25,10 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    env: {
+      ...process.env,
+      AUTH_TRUST_HOST: "true",
+      AUTH_URL: baseURL,
+    },
   },
 });

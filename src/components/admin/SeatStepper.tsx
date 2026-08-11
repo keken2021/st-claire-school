@@ -2,7 +2,8 @@
 
 import { useOptimistic, useState, useTransition } from "react";
 import { Minus, Plus } from "lucide-react";
-import { idleState, setEnrolledCount } from "@/app/admin/actions";
+import { idleState } from "@/app/admin/action-state";
+import { setEnrolledCount } from "@/app/admin/actions";
 
 /**
  * Enrolled-count stepper.

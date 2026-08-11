@@ -3,7 +3,8 @@
 import { useActionState } from "react";
 import { Trash2 } from "lucide-react";
 import type { ClassSlot } from "@/types";
-import { createSlot, idleState, retireSlot, updateSlot } from "@/app/admin/actions";
+import { createSlot, retireSlot, updateSlot } from "@/app/admin/actions";
+import { idleState } from "@/app/admin/action-state";
 import { DAY_NAMES, minutesToTimeValue } from "@/lib/schedule";
 import SeatStepper from "./SeatStepper";
 import { Card, Field, FormStatus, SectionTitle, Select, SubmitButton, TextInput } from "./ui";

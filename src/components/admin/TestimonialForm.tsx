@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import type { Testimonial } from "@/types";
-import { idleState, updateTestimonial } from "@/app/admin/actions";
+import { idleState } from "@/app/admin/action-state";
+import { updateTestimonial } from "@/app/admin/actions";
 import { Field, FormStatus, Select, SubmitButton, TextArea, TextInput } from "./ui";
 
 export default function TestimonialForm({

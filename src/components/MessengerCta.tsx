@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, ClipboardPaste, MessageCircle } from "lucide-react";
+import { Check, MessageCircle } from "lucide-react";
 import {
   buildMessengerMessage,
   buildMessengerUrl,

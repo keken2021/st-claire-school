@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, EyeOff } from "lucide-react";
 import { getAdminPrograms } from "@/lib/content";
-import { openSeats } from "@/lib/schedule";
 
 export const dynamic = "force-dynamic";
 
@@ -22,9 +21,6 @@ export default async function AdminProgramsPage() {
         <div className="overflow-hidden rounded-2xl border border-ink/[0.08] bg-white">
           <ul className="divide-y divide-ink/[0.06]">
             {programs.map((program) => {
-              const slots = (program.slots ?? []).filter((slot) => slot.isActive);
-              const seats = slots.reduce((total, slot) => total + openSeats(slot), 0);
-
               return (
                 <li key={program.id}>
                   <Link

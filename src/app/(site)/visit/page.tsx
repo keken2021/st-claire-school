@@ -30,9 +30,9 @@ export default function VisitPage() {
           {/* Primary channel */}
           <Reveal className="lg:col-span-3">
             <div className="rounded-2xl border border-rose-200/70 bg-gradient-to-br from-rose-50 to-cream p-7 sm:p-9">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-rose-600 text-white">
+              {/* <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-rose-600 text-white">
                 <MessageCircle size={22} strokeWidth={1.75} />
-              </span>
+              </span> */}
               <h2 className="mt-5 font-display text-2xl sm:text-3xl font-semibold text-ink tracking-display">
                 Messenger is the fastest way to reach us
               </h2>
@@ -109,7 +109,7 @@ export default function VisitPage() {
               </ul>
 
               <h3 className="mt-7 flex items-center gap-2 font-display text-base font-semibold text-ink tracking-display">
-                <Clock size={17} className="text-rose-600" strokeWidth={1.75} /> Opening hours
+                <Clock size={17} className="text-rose-600" strokeWidth={1.75} /> School hours
               </h3>
               <dl className="mt-3 space-y-2 text-sm">
                 {site.hours.map((entry) => (

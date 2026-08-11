@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { AlertTriangle, Check, TriangleAlert } from "lucide-react";
-import type { ActionState } from "@/app/admin/actions";
+import type { ActionState } from "@/app/admin/action-state";
 
 const INPUT =
   "w-full rounded-lg border border-ink/12 bg-white px-3.5 py-2 text-sm text-ink outline-none focus:border-rose-400";

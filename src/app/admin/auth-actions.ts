@@ -1,4 +1,3 @@
-
 "use server";
 
 import { AuthError } from "next-auth";
@@ -16,20 +15,9 @@ export async function signInWithCredentials(
   formData: FormData
 ): Promise<LoginState> {
   try {
-    const email = formData.get("email");
-    const password = formData.get("password");
-
-    console.log("Email:", JSON.stringify(email));
-    console.log(
-      "Password received:",
-      typeof password === "string",
-      "Length:",
-      typeof password === "string" ? password.length : 0
-    );
-
     await signIn("credentials", {
-      email,
-      password,
+      email: formData.get("email"),
+      password: formData.get("password"),
       redirectTo: "/admin",
     });
 

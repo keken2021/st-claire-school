@@ -35,13 +35,13 @@ export default async function ProgramsPage() {
         <div className="container-page">
           <ProgramBrowser programs={programs} />
         </div>
-        
+
       </section>
-       <Reveal className="flex justify-center">
-            <RippleButton href="/programs/find" variant="primary">
-              Not sure what to choose? Answer 4 questions
-            </RippleButton>
-          </Reveal>
+      <Reveal className="flex justify-center">
+        <RippleButton href="/programs/find" variant="primary">
+          Not sure what to choose? Answer these 4 questions
+        </RippleButton>
+      </Reveal>
 
       <section className="py-20 sm:py-28 bg-mist/50">
         <div className="container-page">

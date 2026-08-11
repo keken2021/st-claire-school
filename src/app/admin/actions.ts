@@ -5,6 +5,7 @@ import { z } from "zod";
 import { requireAdmin } from "@/auth";
 import { prisma } from "@/lib/db";
 import { findOverlaps, formatSlot, parseTimeToMinutes } from "@/lib/schedule";
+import type { ActionState } from "./action-state";
 
 /**
  * Every mutation lives here as a server action. Each one re-checks the session
@@ -15,16 +16,6 @@ import { findOverlaps, formatSlot, parseTimeToMinutes } from "@/lib/schedule";
  * what connects a statically generated marketing page to a live edit — no
  * redeploy needed.
  */
-
-export interface ActionState {
-  status: "idle" | "success" | "error";
-  message?: string;
-  /** Non-blocking observations, such as two classes colliding. */
-  warnings?: string[];
-  fieldErrors?: Record<string, string[]>;
-}
-
-export const idleState: ActionState = { status: "idle" };
 
 const NO_DATABASE: ActionState = {
   status: "error",

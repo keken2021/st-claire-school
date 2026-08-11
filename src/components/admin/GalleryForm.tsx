@@ -3,7 +3,8 @@
 import { useActionState } from "react";
 import Image from "next/image";
 import type { GalleryImage } from "@/types";
-import { idleState, updateGalleryItem } from "@/app/admin/actions";
+import { idleState } from "@/app/admin/action-state";
+import { updateGalleryItem } from "@/app/admin/actions";
 import { Field, FormStatus, Select, SubmitButton, TextInput } from "./ui";
 
 const CATEGORIES = [

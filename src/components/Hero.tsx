@@ -59,7 +59,7 @@ export default function Hero() {
       <FloatingNotes className="opacity-40" />
 
       <div className="relative z-10 container-page pb-20 sm:pb-28 pt-40">
-        <motion.p
+        {/* <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
@@ -69,7 +69,7 @@ export default function Hero() {
           <span className="mt-2 block text-[0.65rem] sm:text-xs font-body font-medium tracking-brand uppercase text-gold-light/90">
             School of {site.tagline}
           </span>
-        </motion.p>
+        </motion.p> */}
 
         <motion.h1
           initial={{ opacity: 0, y: 24 }}

@@ -7,6 +7,9 @@ import type { NextAuthConfig } from "next-auth";
  * providers live in auth.ts and only this config is shared with middleware.
  */
 export const authConfig = {
+  // Required for local e2e / next start on 127.0.0.1 (Auth.js otherwise
+  // rejects the host and leaves the credentials callback hanging).
+  trustHost: true,
   pages: {
     signIn: "/login",
   },
