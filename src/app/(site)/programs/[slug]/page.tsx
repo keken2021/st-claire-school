@@ -5,11 +5,11 @@ import { ArrowLeft, BarChart3, Clock, Users2 } from "lucide-react";
 import ProgramImage from "@/components/ProgramImage";
 import MessengerCta from "@/components/MessengerCta";
 import ProgramCard from "@/components/ProgramCard";
+import ClassTimesSchedule from "@/components/ClassTimesSchedule";
 import SectionHeading from "@/components/SectionHeading";
 import JsonLd from "@/components/JsonLd";
 import FloatingNotes from "@/components/FloatingNotes";
 import { getProgram, getPrograms } from "@/lib/content";
-import { formatSlot, openSeats } from "@/lib/schedule";
 import { breadcrumbSchema, courseSchema } from "@/lib/structured-data";
 
 export const revalidate = 300;
@@ -141,28 +141,8 @@ export default async function ProgramDetailPage({
                 find a slot that works around your schedule.
               </p>
             ) : (
-              <ul className="mt-4 divide-y divide-ink/[0.06] rounded-2xl border border-ink/[0.06] bg-white overflow-hidden">
-                {slots.map((slot) => {
-                  const seats = openSeats(slot);
-                  return (
-                    <li
-                      key={slot.id}
-                      className="flex flex-wrap items-center justify-between gap-3 px-5 py-4"
-                    >
-                      <span className="text-sm font-medium text-ink">{formatSlot(slot)}</span>
-                      {seats > 0 ? (
-                        <span className="rounded-md bg-gold/10 px-2.5 py-1 text-[0.7rem] font-medium uppercase tracking-wider text-gold-dark">
-                          Available
-                        </span>
-                      ) : null}
-                    </li>
-                  );
-                })}
-              </ul>
+              <ClassTimesSchedule slots={slots} />
             )}
-            {/* <p className="mt-3 text-xs text-ink/65">
-              Availability is a guide only. Message us to confirm a class time before you travel.
-            </p> */}
 
             {tuition.length > 0 && (
               <>
