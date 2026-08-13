@@ -48,23 +48,10 @@ test.describe("admin crud coverage", () => {
     await expect(page.getByText("Testimonial saved.")).toBeVisible();
   });
 
-  test("gallery caption save persists", async ({ page }) => {
+  test("gallery page explains file-based photos", async ({ page }) => {
     await page.goto("/admin/gallery");
-    const caption = page.getByLabel("Caption").first();
-    const original = await caption.inputValue();
-    const marker = `Gallery CRUD ${Date.now()}`;
-    const nextValue = `${marker} ${original}`.slice(0, 140);
-
-    await caption.fill(nextValue);
-    await page.getByRole("button", { name: "Save" }).first().click();
-    await expect(page.getByText("Photo details saved.")).toBeVisible();
-
-    await page.reload();
-    await expect(caption).toHaveValue(nextValue);
-
-    await caption.fill(original);
-    await page.getByRole("button", { name: "Save" }).first().click();
-    await expect(page.getByText("Photo details saved.")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Gallery" })).toBeVisible();
+    await expect(page.getByText(/public\/images\/gallery/i)).toBeVisible();
   });
 
   test("class time can be added", async ({ page }) => {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, BarChart3, CalendarClock, ImageIcon, Quote } from "lucide-react";
-import { getAdminGallery, getAdminPrograms, getAdminTestimonials } from "@/lib/content";
+import { getAdminPrograms, getAdminTestimonials, getGallery } from "@/lib/content";
 import { getFunnelSummary } from "@/lib/analytics";
 import { openSeats } from "@/lib/schedule";
 
@@ -10,7 +10,7 @@ export default async function AdminOverviewPage() {
   const [programs, testimonials, gallery, funnel] = await Promise.all([
     getAdminPrograms(),
     getAdminTestimonials(),
-    getAdminGallery(),
+    getGallery(),
     getFunnelSummary(30),
   ]);
 
@@ -38,7 +38,7 @@ export default async function AdminOverviewPage() {
       href: "/admin/gallery",
       icon: ImageIcon,
       label: "Gallery",
-      value: `${gallery.filter((item) => item.isVisible).length} published`,
+      value: `${gallery.length} photos from disk`,
     },
     {
       href: "/admin/insights",
@@ -85,13 +85,13 @@ export default async function AdminOverviewPage() {
         <ul className="mt-3 space-y-2 text-sm text-ink/70">
           <li>
             {openSeatTotal > 0
-              ? `${openSeatTotal} seats are currently advertised as open across all programs.`
-              : "No open seats are advertised. Every class time is showing as full."}
+              ? `${openSeatTotal} class seats currently show as Available on the site.`
+              : "No class times currently show as Available."}
           </li>
           {fullSlots.length > 0 && (
             <li>
-              {fullSlots.length} class {fullSlots.length === 1 ? "time is" : "times are"} full, so
-              those buttons now ask parents about the waitlist.
+              {fullSlots.length} class {fullSlots.length === 1 ? "time has" : "times have"} no open
+              seats — those rows stay blank on the public page so parents can still enquire.
             </li>
           )}
           {programs.some((program) => !program.isActive) && (

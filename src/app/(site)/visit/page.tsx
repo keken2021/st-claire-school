@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Clock, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock, MapPin,  Phone } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import MessengerCta from "@/components/MessengerCta";
@@ -22,7 +22,7 @@ export default function VisitPage() {
       <PageHero
         eyebrow="Visit Us"
         title="Come See the School"
-        description="Message us with a question, call during opening hours, or drop by and meet the teachers."
+        description="Message us with a question, call during school hours, or drop by and meet the teachers."
       />
 
       <section className="py-16 sm:py-20 bg-cream">
@@ -64,7 +64,7 @@ export default function VisitPage() {
                   Prefer to call?
                 </h3>
                 <p className="mt-1.5 text-sm text-ink/70 leading-relaxed">
-                  Reach us during opening hours on Wednesdays, Fridays, and Saturdays.
+                  Reach us by phone any day during school hours.
                 </p>
                 <CallLink className="mt-4" />
               </div>

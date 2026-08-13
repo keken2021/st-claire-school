@@ -1,22 +1,11 @@
 import type { Program } from "@/types";
 
-/**
- * Canonical program content. This doubles as the database seed (see
- * prisma/seed.ts) and as the fallback content source when DATABASE_URL is not
- * configured, so the site builds and runs without a database.
- *
- * PLACEHOLDER: tuition amounts and slot capacities are realistic stand-ins.
- * Replace them with the school's real figures via /admin before launch.
- *
- * Class days mirror the school's opening hours (Wednesday, Friday, Saturday).
- */
-
 const slot = (
   programId: string,
   dayOfWeek: number,
   startMinutes: number,
   capacity: number,
-  enrolledCount: number
+  enrolledCount: number,
 ) => ({
   id: `${programId}-${dayOfWeek}-${startMinutes}`,
   programId,
@@ -34,7 +23,7 @@ const tuition = (
   amount: number,
   cadence: string,
   sortOrder: number,
-  note?: string
+  note?: string,
 ) => ({
   id: `${programId}-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
   programId,
@@ -67,14 +56,27 @@ export const programs: Program[] = [
     sortOrder: 1,
     isActive: true,
     slots: [
-      slot("piano", 3, 900, 1, 0),
-      slot("piano", 5, 960, 1, 1),
-      slot("piano", 6, 540, 6, 4),
-      slot("piano", 6, 660, 6, 6),
+      slot("piano", 3, 480, 10, 0),
+      slot("piano", 5, 480, 10, 0),
+      slot("piano", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("piano", "Private", 4000, "per month", 1, "Eight 60-minute one-on-one sessions"),
-      tuition("piano", "Group", 2500, "per month", 2, "Up to six students per class"),
+      tuition(
+        "piano",
+        "Private",
+        4000,
+        "per month",
+        1,
+        "Eight 60-minute one-on-one sessions",
+      ),
+      tuition(
+        "piano",
+        "Group",
+        2500,
+        "per month",
+        2,
+        "Up to six students per class",
+      ),
     ],
   },
   {
@@ -98,12 +100,27 @@ export const programs: Program[] = [
     sortOrder: 2,
     isActive: true,
     slots: [
-      slot("voice", 3, 960, 1, 0),
-      slot("voice", 6, 600, 8, 5),
+      slot("voice", 3, 480, 10, 0),
+      slot("voice", 5, 480, 10, 0),
+      slot("voice", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("voice", "Private", 4000, "per month", 1, "Eight 60-minute one-on-one sessions"),
-      tuition("voice", "Group", 2500, "per month", 2, "Up to eight students per class"),
+      tuition(
+        "voice",
+        "Private",
+        4000,
+        "per month",
+        1,
+        "Eight 60-minute one-on-one sessions",
+      ),
+      tuition(
+        "voice",
+        "Group",
+        2500,
+        "per month",
+        2,
+        "Up to eight students per class",
+      ),
     ],
   },
   {
@@ -127,12 +144,27 @@ export const programs: Program[] = [
     sortOrder: 3,
     isActive: true,
     slots: [
-      slot("violin", 5, 900, 1, 0),
-      slot("violin", 6, 720, 6, 3),
+      slot("violin", 3, 480, 10, 0),
+      slot("violin", 5, 480, 10, 0),
+      slot("violin", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("violin", "Private", 4200, "per month", 1, "Eight 60-minute one-on-one sessions"),
-      tuition("violin", "Group", 2700, "per month", 2, "Up to six students per class"),
+      tuition(
+        "violin",
+        "Private",
+        4200,
+        "per month",
+        1,
+        "Eight 60-minute one-on-one sessions",
+      ),
+      tuition(
+        "violin",
+        "Group",
+        2700,
+        "per month",
+        2,
+        "Up to six students per class",
+      ),
     ],
   },
   {
@@ -142,7 +174,7 @@ export const programs: Program[] = [
     category: "Music",
     interest: "music",
     description:
-      "Chords, fingerstyle, and songwriting basics for acoustic and electric guitar, taught through songs students actually love.",
+      "Chords, strumming patterns, for acoustic and electric guitar, taught through songs students actually love.",
     detail:
       "Guitar lessons start with the songs a student already listens to, then work backward into the technique those songs require. Chord vocabulary, strumming and picking patterns, and enough theory to improvise and write their own material.",
     ageGroup: "Ages 4+",
@@ -156,12 +188,27 @@ export const programs: Program[] = [
     sortOrder: 4,
     isActive: true,
     slots: [
-      slot("guitar", 5, 1020, 1, 0),
-      slot("guitar", 6, 780, 8, 6),
+      slot("guitar", 3, 480, 10, 0),
+      slot("guitar", 5, 480, 10, 0),
+      slot("guitar", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("guitar", "Private", 3800, "per month", 1, "Eight 60-minute one-on-one sessions"),
-      tuition("guitar", "Group", 2300, "per month", 2, "Up to eight students per class"),
+      tuition(
+        "guitar",
+        "Private",
+        3800,
+        "per month",
+        1,
+        "Eight 60-minute one-on-one sessions",
+      ),
+      tuition(
+        "guitar",
+        "Group",
+        2300,
+        "per month",
+        2,
+        "Up to eight students per class",
+      ),
     ],
   },
   {
@@ -185,35 +232,27 @@ export const programs: Program[] = [
     sortOrder: 5,
     isActive: true,
     slots: [
-      slot("ukulele", 3, 840, 8, 3),
-      slot("ukulele", 6, 480, 8, 2),
+      slot("ukulele", 3, 480, 10, 0),
+      slot("ukulele", 5, 480, 10, 0),
+      slot("ukulele", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("ukulele", "Group", 2000, "per month", 1, "Eight 45-minute sessions"),
-      tuition("ukulele", "Private", 3500, "per month", 2, "Eight 45-minute one-on-one sessions"),
-    ],
-  },
-  {
-    id: "music-theory",
-    slug: "music-theory",
-    name: "Music Theory",
-    category: "Music",
-    interest: "music",
-    description:
-      "The grammar behind the music — notation, harmony, and ear training that strengthens every instrument and voice student.",
-    detail:
-      "Theory is the fastest way to make practice more efficient. Students learn to read fluently, understand why chord progressions work, and identify intervals by ear. Most enroll alongside an instrument, and their progress there noticeably accelerates.",
-    ageGroup: "Ages 8+",
-    minAge: 8,
-    skillLevel: "All Levels",
-    duration: "60 min / session",
-    icon: "BookOpenText",
-    image: null,
-    sortOrder: 6,
-    isActive: true,
-    slots: [slot("music-theory", 5, 840, 10, 4)],
-    tuition: [
-      tuition("music-theory", "Group", 1800, "per month", 1, "Four 60-minute sessions"),
+      tuition(
+        "ukulele",
+        "Group",
+        2000,
+        "per month",
+        1,
+        "Eight 45-minute sessions",
+      ),
+      tuition(
+        "ukulele",
+        "Private",
+        3500,
+        "per month",
+        2,
+        "Eight 45-minute one-on-one sessions",
+      ),
     ],
   },
   {
@@ -237,12 +276,19 @@ export const programs: Program[] = [
     sortOrder: 7,
     isActive: true,
     slots: [
-      slot("ballet", 3, 960, 12, 9),
-      slot("ballet", 6, 540, 12, 10),
-      slot("ballet", 6, 660, 12, 12),
+      slot("ballet", 3, 480, 10, 0),
+      slot("ballet", 5, 480, 10, 0),
+      slot("ballet", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("ballet", "Group", 2400, "per month", 1, "Eight 60-minute classes"),
+      tuition(
+        "ballet",
+        "Group",
+        2400,
+        "per month",
+        1,
+        "Eight 60-minute classes",
+      ),
     ],
   },
   {
@@ -266,11 +312,19 @@ export const programs: Program[] = [
     sortOrder: 8,
     isActive: true,
     slots: [
-      slot("dance", 5, 960, 14, 8),
-      slot("dance", 6, 780, 14, 11),
+      slot("dance", 3, 480, 10, 0),
+      slot("dance", 5, 480, 10, 0),
+      slot("dance", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("dance", "Group", 2400, "per month", 1, "Eight 60-minute classes"),
+      tuition(
+        "dance",
+        "Group",
+        2400,
+        "per month",
+        1,
+        "Eight 60-minute classes",
+      ),
     ],
   },
   {
@@ -288,12 +342,25 @@ export const programs: Program[] = [
     skillLevel: "Beginner to Advanced",
     duration: "60 min / session",
     icon: "Footprints",
-    image: null,
+    image: "/images/programs/ballet.jpg",
+    imageWidth: 960,
+    imageHeight: 720,
     sortOrder: 9,
     isActive: true,
-    slots: [slot("pasarela", 6, 900, 12, 5)],
+    slots: [
+      slot("pasarela", 3, 480, 10, 0),
+      slot("pasarela", 5, 480, 10, 0),
+      slot("pasarela", 6, 480, 10, 0),
+    ],
     tuition: [
-      tuition("pasarela", "Group", 2200, "per month", 1, "Four 60-minute classes"),
+      tuition(
+        "pasarela",
+        "Group",
+        2200,
+        "per month",
+        1,
+        "Four 60-minute classes",
+      ),
     ],
   },
   {
@@ -311,12 +378,25 @@ export const programs: Program[] = [
     skillLevel: "All Levels",
     duration: "60 min / session",
     icon: "Presentation",
-    image: null,
+    image: "/images/gallery/hero1.jpg",
+    imageWidth: 958,
+    imageHeight: 487,
     sortOrder: 10,
     isActive: true,
-    slots: [slot("public-speaking", 6, 840, 10, 4)],
+    slots: [
+      slot("public-speaking", 3, 480, 10, 0),
+      slot("public-speaking", 5, 480, 10, 0),
+      slot("public-speaking", 6, 480, 10, 0),
+    ],
     tuition: [
-      tuition("public-speaking", "Group", 2200, "per month", 1, "Four 60-minute sessions"),
+      tuition(
+        "public-speaking",
+        "Group",
+        2200,
+        "per month",
+        1,
+        "Four 60-minute sessions",
+      ),
     ],
   },
   {
@@ -334,16 +414,33 @@ export const programs: Program[] = [
     skillLevel: "All Levels",
     duration: "60 min / session",
     icon: "GraduationCap",
-    image: null,
+    image: "/images/programs/acad-tutorial.jpg",
+    imageWidth: 1080,
+    imageHeight: 1350,
     sortOrder: 11,
     isActive: true,
     slots: [
-      slot("academic-tutorials", 3, 900, 6, 2),
-      slot("academic-tutorials", 5, 900, 6, 3),
+      slot("academic-tutorials", 3, 480, 10, 0),
+      slot("academic-tutorials", 5, 480, 10, 0),
+      slot("academic-tutorials", 6, 480, 10, 0),
     ],
     tuition: [
-      tuition("academic-tutorials", "Private", 3600, "per month", 1, "Eight 60-minute sessions"),
-      tuition("academic-tutorials", "Group", 2000, "per month", 2, "Up to six students"),
+      tuition(
+        "academic-tutorials",
+        "Private",
+        3600,
+        "per month",
+        1,
+        "Eight 60-minute sessions",
+      ),
+      tuition(
+        "academic-tutorials",
+        "Group",
+        2000,
+        "per month",
+        2,
+        "Up to six students",
+      ),
     ],
   },
 ];

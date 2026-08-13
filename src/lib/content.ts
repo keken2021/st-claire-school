@@ -1,8 +1,8 @@
 import type { GalleryImage, Program, Testimonial } from "@/types";
 import { programs as seedPrograms } from "@/data/programs";
-import { galleryImages as seedGallery } from "@/data/gallery";
 import { testimonials as seedTestimonials } from "@/data/testimonials";
 import { isDatabaseConfigured, prisma } from "./db";
+import { loadGalleryFromFiles } from "./gallery-files";
 
 /**
  * Content read layer.
@@ -55,7 +55,10 @@ export async function getProgram(slug: string): Promise<Program | null> {
         tuition: { orderBy: { sortOrder: "asc" } },
       },
     });
-    return (row as unknown as Program | null) ?? seedProgram(slug);
+    if (row?.isActive) return row as unknown as Program;
+    // Prefer a live DB row; otherwise fall back to seed so local/preview builds
+    // still resolve pages when the database is empty or temporarily unreachable.
+    return seedProgram(slug);
   } catch (error) {
     warnFallback("program detail", error);
     return seedProgram(slug);
@@ -109,19 +112,6 @@ export async function getAdminTestimonials(): Promise<Editable<Testimonial>[]> {
   return rows as unknown as Editable<Testimonial>[];
 }
 
-export async function getAdminGallery(): Promise<Editable<GalleryImage>[]> {
-  if (!prisma) {
-    return seedGallery.map((image, index) => ({
-      ...image,
-      isVisible: true,
-      sortOrder: index + 1,
-    }));
-  }
-
-  const rows = await prisma.galleryItem.findMany({ orderBy: { sortOrder: "asc" } });
-  return rows as unknown as Editable<GalleryImage>[];
-}
-
 export async function getTestimonials(): Promise<Testimonial[]> {
   if (!prisma) return seedTestimonials;
 
@@ -138,20 +128,12 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   }
 }
 
+/**
+ * Gallery never uses the database. Drop files in public/images/gallery (or keep
+ * curated entries in src/data/gallery.ts when that folder is empty).
+ */
 export async function getGallery(): Promise<GalleryImage[]> {
-  if (!prisma) return seedGallery;
-
-  try {
-    const rows = await prisma.galleryItem.findMany({
-      where: { isVisible: true },
-      orderBy: { sortOrder: "asc" },
-    });
-    if (rows.length === 0) return seedGallery;
-    return rows as unknown as GalleryImage[];
-  } catch (error) {
-    warnFallback("gallery", error);
-    return seedGallery;
-  }
+  return loadGalleryFromFiles();
 }
 
 function activeSeedPrograms(): Program[] {
@@ -159,7 +141,8 @@ function activeSeedPrograms(): Program[] {
 }
 
 function seedProgram(slug: string): Program | null {
-  return seedPrograms.find((program) => program.slug === slug) ?? null;
+  const program = seedPrograms.find((entry) => entry.slug === slug);
+  return program?.isActive ? program : null;
 }
 
 export { isDatabaseConfigured };

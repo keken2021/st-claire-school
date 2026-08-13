@@ -43,7 +43,16 @@ async function seedPrograms() {
     }
   }
 
-  console.log(`Seeded ${programs.length} programs with slots and tuition tiers.`);
+  const keptIds = programs.map((program) => program.id);
+  const retired = await prisma.program.updateMany({
+    where: { id: { notIn: keptIds }, isActive: true },
+    data: { isActive: false },
+  });
+
+  console.log(
+    `Seeded ${programs.length} programs with slots and tuition tiers.` +
+      (retired.count ? ` Retired ${retired.count} program(s) no longer in seed.` : "")
+  );
 }
 
 async function seedTestimonials() {

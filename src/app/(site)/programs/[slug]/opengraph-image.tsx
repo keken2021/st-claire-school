@@ -14,8 +14,13 @@ export async function generateStaticParams() {
  * Branded share card per program, so a link pasted into Messenger or Facebook
  * looks like the school rather than a bare URL.
  */
-export default async function Image({ params }: { params: { slug: string } }) {
-  const program = await getProgram(params.slug);
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const program = await getProgram(slug);
 
   return new ImageResponse(
     (

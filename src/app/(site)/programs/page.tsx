@@ -14,7 +14,7 @@ import { breadcrumbSchema } from "@/lib/structured-data";
 export const metadata: Metadata = {
   title: "Programs",
   description:
-    "Piano, voice, violin, guitar, ukulele, music theory, ballet, dance, pasarela, public speaking, and academic tutorials in Minglanilla, Cebu.",
+    "Piano, voice, violin, guitar, ukulele, ballet, dance, pasarela, public speaking, and academic tutorials in Minglanilla, Cebu.",
   alternates: { canonical: "/programs" },
 };
 

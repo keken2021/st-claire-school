@@ -14,7 +14,7 @@ interface ProgramCardProps {
 export default function ProgramCard({ program, delay = 0 }: ProgramCardProps) {
   const Icon = getIcon(program.icon);
   const slots = (program.slots ?? []).filter((slot) => slot.isActive);
-  const seats = slots.reduce((total, slot) => total + openSeats(slot), 0);
+  const hasAvailability = slots.some((slot) => openSeats(slot) > 0);
 
   return (
     <Reveal delay={delay} className="h-full">
@@ -59,9 +59,9 @@ export default function ProgramCard({ program, delay = 0 }: ProgramCardProps) {
             <span className="inline-block rounded-md bg-rose-50 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wider text-rose-700">
               {program.skillLevel}
             </span>
-            {seats > 0 && (
+            {hasAvailability && (
               <span className="inline-block rounded-md bg-gold/10 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wider text-gold-dark">
-                {seats} {seats === 1 ? "seat" : "seats"} open
+                Available
               </span>
             )}
           </div>

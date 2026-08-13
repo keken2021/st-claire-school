@@ -82,9 +82,9 @@ export default function SeatStepper({
         {error ? (
           <span className="text-rose-700">{error}</span>
         ) : open > 0 ? (
-          `${open} ${open === 1 ? "seat" : "seats"} shown as open`
+          `${open} ${open === 1 ? "seat" : "seats"} shown as Available`
         ) : (
-          "Shown as full — CTA switches to the waitlist"
+          "No Available badge — parents can still enquire"
         )}
       </p>
     </div>

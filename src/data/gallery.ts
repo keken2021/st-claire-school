@@ -1,16 +1,19 @@
-import type { GalleryImage } from "@/types";
-
 /**
  * Real photographs from the school, with dimensions read from the source files
  * so next/image can reserve layout space and avoid shifting.
  *
- * Additional photos live in src/assets and can be published through /admin once
- * the school confirms captions and consent for any images featuring minors.
+ * Preferred workflow: drop new photos into `public/images/gallery/` (optionally
+ * inside a category subfolder such as `Classes` or `Events`). Those files are
+ * picked up automatically and do not need a database row.
+ *
+ * This curated list is only the fallback when `public/images/gallery` is empty.
  */
+import type { GalleryImage } from "@/types";
+
 export const galleryImages: GalleryImage[] = [
   {
     id: "g-piano",
-    src: "/images/programs/piano.jpg",
+    src: "/images/gallery/piano.jpg",
     category: "Classes",
     caption: "Piano fundamentals in the studio",
     width: 468,
@@ -18,7 +21,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-vocals",
-    src: "/images/programs/vocals.jpg",
+    src: "/images/gallery/vocals.jpg",
     category: "Classes",
     caption: "Voice coaching session",
     width: 1365,
@@ -26,7 +29,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-violin",
-    src: "/images/programs/violin1.jpg",
+    src: "/images/gallery/violin1.jpg",
     category: "Classes",
     caption: "Violin students at practice",
     width: 1875,
@@ -34,7 +37,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-violin-2",
-    src: "/images/site/violin.jpg",
+    src: "/images/gallery/violin.jpg",
     category: "Student Performances",
     caption: "Violin performance",
     width: 1365,
@@ -42,7 +45,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-guitar",
-    src: "/images/programs/guitar-jacob.jpg",
+    src: "/images/gallery/guitar-jacob.jpg",
     category: "Classes",
     caption: "Guitar lesson in progress",
     width: 2048,
@@ -50,7 +53,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-ukulele",
-    src: "/images/programs/ukelele.jpg",
+    src: "/images/gallery/ukelele.jpg",
     category: "Classes",
     caption: "Ukulele class for our youngest students",
     width: 1365,
@@ -58,7 +61,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-ballet",
-    src: "/images/programs/ballet.jpg",
+    src: "/images/gallery/ballet.jpg",
     category: "Student Performances",
     caption: "Ballet students in the studio",
     width: 960,
@@ -66,7 +69,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-dance",
-    src: "/images/programs/dance.jpg",
+    src: "/images/gallery/dance.jpg",
     category: "Student Performances",
     caption: "Dance production number",
     width: 1848,
@@ -74,7 +77,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-event",
-    src: "/images/site/1.jpg",
+    src: "/images/gallery/1.jpg",
     category: "Events",
     caption: "School event at St. Claire",
     width: 1848,
@@ -82,7 +85,7 @@ export const galleryImages: GalleryImage[] = [
   },
   {
     id: "g-stage",
-    src: "/images/site/hero1.jpg",
+    src: "/images/gallery/hero1.jpg",
     category: "Events",
     caption: "On stage at St. Claire",
     width: 958,

@@ -24,7 +24,7 @@ export const faqs: FaqItem[] = [
     category: "Schedules",
     question: "What days and times are lessons available?",
     answer:
-      "Classes run on Wednesdays, Fridays, and Saturdays between 8:00 AM and 5:00 PM. Each program page lists its current class times and how many seats are open.",
+      "Classes run on Wednesdays, Fridays, and Saturdays between 8:00 AM and 5:00 PM. Each program page lists its current class times and whether a slot is available — message us to reserve a place.",
   },
   {
     id: "f4",

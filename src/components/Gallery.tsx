@@ -5,7 +5,6 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import type { GalleryImage } from "@/types";
-import { galleryCategories } from "@/data/gallery";
 import Reveal from "./Reveal";
 
 export default function Gallery({
@@ -15,7 +14,12 @@ export default function Gallery({
   images: GalleryImage[];
   limit?: number;
 }) {
-  const [active, setActive] = useState<(typeof galleryCategories)[number]>("All");
+  const categories = useMemo(() => {
+    const unique = Array.from(new Set(images.map((image) => image.category))).sort();
+    return ["All", ...unique] as const;
+  }, [images]);
+
+  const [active, setActive] = useState<string>("All");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
@@ -37,7 +41,7 @@ export default function Gallery({
     <div>
       {!limit && (
         <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {galleryCategories.map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               type="button"

@@ -13,6 +13,7 @@ import { formatSlot, openSeats } from "@/lib/schedule";
 import { breadcrumbSchema, courseSchema } from "@/lib/structured-data";
 
 export const revalidate = 300;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const programs = await getPrograms();
@@ -52,8 +53,6 @@ export default async function ProgramDetailPage({
 
   const slots = (program.slots ?? []).filter((slot) => slot.isActive);
   const tuition = program.tuition ?? [];
-  const totalSeats = slots.reduce((total, slot) => total + openSeats(slot), 0);
-  const isFull = slots.length > 0 && totalSeats === 0;
 
   const related = allPrograms
     .filter((item) => item.id !== program.id && item.category === program.category)
@@ -106,7 +105,6 @@ export default async function ProgramDetailPage({
                   source="program_page"
                   programId={program.id}
                   program={program.name}
-                  waitlist={isFull}
                   variant="gold"
                 />
               </div>
@@ -154,22 +152,17 @@ export default async function ProgramDetailPage({
                       <span className="text-sm font-medium text-ink">{formatSlot(slot)}</span>
                       {seats > 0 ? (
                         <span className="rounded-md bg-gold/10 px-2.5 py-1 text-[0.7rem] font-medium uppercase tracking-wider text-gold-dark">
-                          {seats} of {slot.capacity} open
+                          Available
                         </span>
-                      ) : (
-                        <span className="rounded-md bg-mist px-2.5 py-1 text-[0.7rem] font-medium uppercase tracking-wider text-ink/65">
-                          Full — waitlist
-                        </span>
-                      )}
+                      ) : null}
                     </li>
                   );
                 })}
               </ul>
             )}
-            <p className="mt-3 text-xs text-ink/65">
-              Seat counts are kept up to date by our staff. Message us to confirm before you
-              travel.
-            </p>
+            {/* <p className="mt-3 text-xs text-ink/65">
+              Availability is a guide only. Message us to confirm a class time before you travel.
+            </p> */}
 
             {tuition.length > 0 && (
               <>
@@ -203,7 +196,7 @@ export default async function ProgramDetailPage({
           <aside className="lg:col-span-1">
             <div className="lg:sticky lg:top-28 rounded-2xl border border-ink/[0.08] bg-white p-6 shadow-card">
               <h2 className="font-display text-lg font-semibold text-ink tracking-display">
-                {isFull ? `Join the ${program.name} waitlist` : `Ask about ${program.name}`}
+                Ask about {program.name}
               </h2>
               <p className="mt-2 text-sm text-ink/70 leading-relaxed">
                 We&apos;ll open Messenger and copy your details across, so you only need to press
@@ -215,7 +208,6 @@ export default async function ProgramDetailPage({
                   source="program_rail"
                   programId={program.id}
                   program={program.name}
-                  waitlist={isFull}
                   variant="primary"
                   showPreview
                 />

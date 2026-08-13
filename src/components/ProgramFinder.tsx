@@ -308,9 +308,7 @@ export default function ProgramFinder({ programs }: { programs: Program[] }) {
                       {nextSlot && result.status === "matched" && (
                         <p className="mt-3 text-xs text-ink/65">
                           {formatSlot(nextSlot)}
-                          {seats > 0
-                            ? ` · ${seats} ${seats === 1 ? "seat" : "seats"} open`
-                            : " · currently full"}
+                          {seats > 0 ? " · Available" : ""}
                         </p>
                       )}
                     </div>
@@ -325,14 +323,12 @@ export default function ProgramFinder({ programs }: { programs: Program[] }) {
                       experience={expParam as Experience}
                       when={whenParam as SchedulePreference}
                       interest={interestParam as InterestAnswer}
-                      waitlist={result.status === "matched" && seats === 0}
+                      waitlist={result.status === "too-young"}
                       variant={index === 0 ? "primary" : "outline"}
                       label={
                         result.status === "too-young"
-                          ? "Ask about the waitlist"
-                          : seats === 0
-                            ? "Ask about the waitlist"
-                            : `Ask about ${program.name}`
+                          ? "Ask about joining later"
+                          : `Ask about ${program.name}`
                       }
                     />
                   </div>

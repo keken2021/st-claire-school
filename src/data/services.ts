@@ -20,12 +20,6 @@ export const services: ServiceItem[] = [
     icon: "Theater",
   },
   {
-    id: "music-theory-service",
-    name: "Music Theory",
-    description: "A solid foundation in reading, harmony, and ear training.",
-    icon: "BookOpenText",
-  },
-  {
     id: "talent-development",
     name: "Talent Development",
     description: "Individualized plans that nurture each student's unique strengths.",

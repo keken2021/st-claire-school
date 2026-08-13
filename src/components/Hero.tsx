@@ -9,9 +9,9 @@ import FloatingNotes from "./FloatingNotes";
 import { site } from "@/lib/site";
 
 const slides = [
-  { src: "/images/site/hero1.jpg", width: 958, height: 487 },
+  { src: "/images/gallery/hero1.jpg", width: 958, height: 487 },
   { src: "/images/programs/dance.jpg", width: 1848, height: 1224 },
-  { src: "/images/site/1.jpg", width: 1848, height: 1224 },
+  { src: "/images/gallery/1.jpg", width: 1848, height: 1224 },
 ];
 
 export default function Hero() {
