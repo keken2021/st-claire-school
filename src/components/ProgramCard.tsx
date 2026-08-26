@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, Users2 } from "lucide-react";
 import type { Program } from "@/types";
 import { getIcon } from "@/utils/icons";
-import { openSeats } from "@/lib/schedule";
+// import { openSeats } from "@/lib/schedule";
 import Reveal from "./Reveal";
 import ProgramImage from "./ProgramImage";
 
@@ -13,8 +13,8 @@ interface ProgramCardProps {
 
 export default function ProgramCard({ program, delay = 0 }: ProgramCardProps) {
   const Icon = getIcon(program.icon);
-  const slots = (program.slots ?? []).filter((slot) => slot.isActive);
-  const hasAvailability = slots.some((slot) => openSeats(slot) > 0);
+  // const slots = (program.slots ?? []).filter((slot) => slot.isActive);
+  // const hasAvailability = slots.some((slot) => openSeats(slot) > 0);
 
   return (
     <Reveal delay={delay} className="h-full">
