@@ -43,4 +43,10 @@ export const services: ServiceItem[] = [
     description: "Structured guidance for graded music and arts examinations.",
     icon: "ClipboardCheck",
   },
+  {
+    id: "confidence-bldg",
+    name: "Confidence Building",
+    description: "Helping students develop confidence, discipline, and self-expression through the performing arts.",
+    icon: "HouseHeart",
+  },
 ];

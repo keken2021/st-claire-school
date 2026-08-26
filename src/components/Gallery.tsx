@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import type { GalleryImage } from "@/types";
 import Reveal from "./Reveal";
+import RippleButton from "./RippleButton";
 
 export default function Gallery({
   images,
@@ -74,7 +75,7 @@ export default function Gallery({
             >
               <Image
                 src={image.src}
-                alt={image.caption}
+                alt="{image.caption}"
                 width={image.width}
                 height={image.height}
                 sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
@@ -82,14 +83,23 @@ export default function Gallery({
               />
               <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                 <span className="text-white text-xs font-medium flex items-center gap-1.5">
-                  <ZoomIn size={14} /> {image.caption}
+                  <ZoomIn size={14} />
                 </span>
               </span>
             </button>
-          </Reveal>
-        ))}
-      </div>
 
+          </Reveal>
+        )
+      )
+      
+    }
+      </div>
+      <Reveal className="flex justify-center mt-10">
+           <RippleButton href="https://www.facebook.com/StClaireSchoolOfPerformingArtsAndCentreOfLearning/photos_albums" variant="primary">
+             More photos
+           </RippleButton>
+         </Reveal>
+         
       <AnimatePresence>
         {current && (
           <motion.div

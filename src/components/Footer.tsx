@@ -13,7 +13,7 @@ export default async function Footer() {
   return (
     <footer className="relative bg-ink text-white/70 overflow-hidden">
       <div className="staff-lines opacity-[0.04] absolute inset-x-0 top-0" />
-      <div className="container-page py-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container-page py-12 sm:py-16 grid gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Link href="/" className="flex items-center gap-3 mb-5">
             <Image
@@ -40,10 +40,10 @@ export default async function Footer() {
         </div>
 
         <div>
-          <h2 className="font-display text-white text-sm font-semibold tracking-wider uppercase mb-5">
+          <h2 className="font-display text-white text-sm font-semibold tracking-wider uppercase mb-4 sm:mb-5">
             Quick Links
           </h2>
-          <ul className="space-y-2.5 text-sm">
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm sm:grid-cols-1">
             {[
               { href: "/about", label: "About Us" },
               { href: "/programs", label: "Programs" },
@@ -63,10 +63,10 @@ export default async function Footer() {
         </div>
 
         <div>
-          <h2 className="font-display text-white text-sm font-semibold tracking-wider uppercase mb-5">
+          <h2 className="font-display text-white text-sm font-semibold tracking-wider uppercase mb-4 sm:mb-5">
             Programs
           </h2>
-          <ul className="space-y-2.5 text-sm">
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm sm:grid-cols-1">
             {programs.slice(0, 6).map((program) => (
               <li key={program.id}>
                 <Link

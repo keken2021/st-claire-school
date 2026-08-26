@@ -25,7 +25,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-ink">
+    <section className="relative min-h-[78svh] sm:min-h-[100svh] flex items-end overflow-hidden bg-ink">
       <div className="absolute inset-0">
         <AnimatePresence mode="sync">
           <motion.div
@@ -58,7 +58,7 @@ export default function Hero() {
 
       <FloatingNotes className="opacity-40" />
 
-      <div className="relative z-10 container-page pb-20 sm:pb-28 pt-40">
+      <div className="relative z-10 container-page pb-14 sm:pb-28 pt-28 sm:pt-40">
         {/* <motion.p
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.12 }}
-          className="max-w-3xl mt-8 text-white font-display font-semibold text-4xl sm:text-5xl md:text-6xl leading-[1.08] tracking-display"
+          className="max-w-3xl text-white font-display font-semibold text-4xl sm:text-5xl md:text-6xl leading-[1.08] tracking-display"
         >
           Where passion meets <span className="text-gradient-gold">performance</span>
         </motion.h1>
@@ -84,7 +84,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.28 }}
-          className="max-w-lg mt-6 text-white/75 text-base sm:text-lg leading-relaxed font-light"
+          className="max-w-lg mt-4 sm:mt-6 text-white/75 text-base sm:text-lg leading-relaxed font-light"
         >
           Helping children discover confidence, creativity, and excellence through music and the
           performing arts in {site.address.locality}, {site.address.region}.
@@ -94,9 +94,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.42 }}
-          className="mt-10 flex flex-wrap items-start gap-4"
+          className="mt-7 sm:mt-10 flex flex-wrap items-start gap-4"
         >
-          <RippleButton href="/programs/find" variant="gold">
+          <RippleButton href="/programs/find" variant="gold" className="mb-10">
             Find the Right Program
           </RippleButton>
           {/* <MessengerCta source="hero" variant="onDark" /> */}

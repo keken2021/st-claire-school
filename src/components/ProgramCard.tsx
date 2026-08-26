@@ -59,11 +59,11 @@ export default function ProgramCard({ program, delay = 0 }: ProgramCardProps) {
             <span className="inline-block rounded-md bg-rose-50 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wider text-rose-700">
               {program.skillLevel}
             </span>
-            {hasAvailability && (
+            {/* {hasAvailability && (
               <span className="inline-block rounded-md bg-gold/10 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wider text-gold-dark">
                 Available
               </span>
-            )}
+            )} */}
           </div>
 
           <Link
