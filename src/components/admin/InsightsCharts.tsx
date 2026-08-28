@@ -37,9 +37,11 @@ function ChartFrame({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-ink/[0.08] bg-white p-5">
-      <h2 className="font-display text-base font-semibold tracking-display text-ink">{title}</h2>
-      <p className="mt-1 mb-4 text-xs text-ink/65">{hint}</p>
+    <div className="rounded-2xl border-2 border-ink/[0.06] bg-white p-6">
+      <h2 className="font-display text-lg font-semibold tracking-display text-ink sm:text-xl">
+        {title}
+      </h2>
+      <p className="mt-2 mb-5 text-sm leading-relaxed text-ink/65 sm:text-base">{hint}</p>
       <div className="h-64">{children}</div>
     </div>
   );

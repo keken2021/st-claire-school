@@ -128,11 +128,11 @@ export default function ClassTimesSchedule({ slots }: { slots: ClassSlot[] }) {
                   <p className="mt-0.5 text-[0.7rem] text-ink/55 tabular-nums">
                     to {formatMinutes(slot.startMinutes + slot.durationMin)}
                   </p>
-                  {available ? (
+                  {/* {available ? (
                     <p className="mt-1.5 text-[0.65rem] font-medium uppercase tracking-wider text-gold-dark">
                       Available
                     </p>
-                  ) : null}
+                  ) : null} */}
                 </div>
               </li>
             );

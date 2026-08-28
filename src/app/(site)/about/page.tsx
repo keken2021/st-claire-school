@@ -117,8 +117,7 @@ export default function AboutPage() {
                 Our Mission
               </h2>
               <p className="text-ink/70 leading-relaxed">
-                To give every student the opportunity to shine and excel by discovering the talent
-                and skills already within them, taught with patience, structure, and genuine care.
+                To nurture every child’s God-given gifts through quality education in academics, music, dance, performing arts, and life skills. Cultivating faith, character, creativity, and confidence in a caring community, and inspiring each student to discover their purpose, share their gifts, and serve others with love.
               </p>
             </div>
           </Reveal>
@@ -129,9 +128,8 @@ export default function AboutPage() {
                 Our Vision
               </h2>
               <p className="text-ink/70 leading-relaxed">
-                To be the school families in Cebu trust with their children&apos;s artistic
-                growth — known not only for skilled performers, but for confident, disciplined,
-                and kind young people.
+                To be a nurturing home of learning where every child discovers their unique light—growing in grace, creativity, character, 
+                and confidence guided by the example of St Clare, to shine brightly and serve with love wherever their journey leads.
               </p>
             </div>
           </Reveal>
@@ -203,14 +201,14 @@ export default function AboutPage() {
               className="absolute left-[1.4rem] top-2 bottom-2 w-px bg-rose-200"
             />
             {history.map((milestone, index) => (
-              <Reveal key={milestone.year} as="li" delay={index * 0.08} className="relative pl-16 pb-10 last:pb-0">
+              <Reveal key={milestone.id} as="li" delay={index * 0.08} className="relative pl-16 pb-10 last:pb-0">
                 <div className="absolute left-0 top-0 h-11 w-11 rounded-xl bg-rose-600 text-white flex items-center justify-center text-[0.7rem] font-semibold tracking-display shadow-soft">
                   {milestone.year}
                 </div>
                 <h3 className="font-display text-xl font-semibold text-ink tracking-display">
                   {milestone.title}
                 </h3>
-                <p className="mt-2 text-sm sm:text-base text-ink/70 leading-relaxed">
+                <p className="mt-2 text-sm sm:text-base text-ink/70 leading-relaxed text-justify">
                   {milestone.description}
                 </p>
               </Reveal>

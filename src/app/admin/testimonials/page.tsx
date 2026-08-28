@@ -1,6 +1,6 @@
 import { getAdminTestimonials } from "@/lib/content";
 import TestimonialForm from "@/components/admin/TestimonialForm";
-import { Card } from "@/components/admin/ui";
+import { Card, HelpBox, PageHeader } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -9,18 +9,21 @@ export default async function AdminTestimonialsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold tracking-display text-ink">
-        Testimonials
-      </h1>
-      <p className="mt-1.5 text-sm text-ink/70">
-        Unpublishing a testimonial removes it from the home page and the testimonials page
-        immediately.
-      </p>
+      <PageHeader
+        title="Parent Reviews"
+        description="These are the quotes families see on the home page and the Reviews page. Edit the text, then press Save review on each card."
+      />
 
-      <ul className="mt-6 space-y-4">
+      <HelpBox title="How to hide a review">
+        Uncheck &ldquo;Show this review on the website&rdquo; and save — it disappears from the
+        site immediately but stays here so you can turn it back on later.
+      </HelpBox>
+
+      <ul className="mt-8 space-y-6">
         {testimonials.map((testimonial) => (
           <li key={testimonial.id}>
             <Card>
+              <p className="mb-5 text-lg font-semibold text-ink">{testimonial.name}</p>
               <TestimonialForm
                 testimonial={testimonial}
                 isVisible={testimonial.isVisible}

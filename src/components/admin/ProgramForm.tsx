@@ -4,7 +4,16 @@ import { useActionState } from "react";
 import type { Program } from "@/types";
 import { idleState } from "@/app/admin/action-state";
 import { updateProgram } from "@/app/admin/actions";
-import { Card, Field, FormStatus, SectionTitle, SubmitButton, TextArea, TextInput } from "./ui";
+import {
+  Card,
+  Field,
+  FormStatus,
+  StepBadge,
+  SubmitButton,
+  TextArea,
+  TextInput,
+  ToggleField,
+} from "./ui";
 
 export default function ProgramForm({ program }: { program: Program }) {
   const [state, formAction, pending] = useActionState(updateProgram, idleState);
@@ -12,21 +21,23 @@ export default function ProgramForm({ program }: { program: Program }) {
 
   return (
     <Card>
-      <SectionTitle hint="Changes appear on the public program page within moments of saving.">
-        Program details
-      </SectionTitle>
+      <StepBadge step={1} label="Program information" />
+      <p className="-mt-2 mb-6 text-base text-ink/70">
+        This is the text parents see when they browse programs on the website.
+      </p>
 
-      <form action={formAction} className="space-y-4">
+      <form action={formAction} className="space-y-5">
         <input type="hidden" name="id" value={program.id} />
 
-        <Field label="Name" name="name" errors={errors.name}>
+        <Field label="Program name" name="name" required errors={errors.name}>
           <TextInput id="name" name="name" defaultValue={program.name} required />
         </Field>
 
         <Field
           label="Short description"
           name="description"
-          hint="Shown on cards, search results, and social previews."
+          hint="A brief summary — shown on cards and when the page is shared on Facebook."
+          required
           errors={errors.description}
         >
           <TextArea
@@ -39,23 +50,30 @@ export default function ProgramForm({ program }: { program: Program }) {
         </Field>
 
         <Field
-          label="Full description"
+          label="Full description (optional)"
           name="detail"
-          hint="The longer explanation on the program page. Optional."
+          hint="Longer text on the program page. You can leave this blank."
           errors={errors.detail}
         >
           <TextArea id="detail" name="detail" rows={5} defaultValue={program.detail ?? ""} />
         </Field>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Age group label" name="ageGroup" errors={errors.ageGroup}>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field
+            label="Age group (what parents read)"
+            name="ageGroup"
+            hint='Example: "Ages 5+"'
+            required
+            errors={errors.ageGroup}
+          >
             <TextInput id="ageGroup" name="ageGroup" defaultValue={program.ageGroup} required />
           </Field>
 
           <Field
-            label="Minimum age"
+            label="Minimum age (number only)"
             name="minAge"
-            hint="Used by the program finder to rule this program in or out."
+            hint="Used by “Find the Right Program” on the website."
+            required
             errors={errors.minAge}
           >
             <TextInput
@@ -69,7 +87,13 @@ export default function ProgramForm({ program }: { program: Program }) {
             />
           </Field>
 
-          <Field label="Skill level" name="skillLevel" errors={errors.skillLevel}>
+          <Field
+            label="Skill level"
+            name="skillLevel"
+            hint='Example: "Beginner to Advanced"'
+            required
+            errors={errors.skillLevel}
+          >
             <TextInput
               id="skillLevel"
               name="skillLevel"
@@ -78,14 +102,20 @@ export default function ProgramForm({ program }: { program: Program }) {
             />
           </Field>
 
-          <Field label="Session length" name="duration" errors={errors.duration}>
+          <Field
+            label="How long is each class?"
+            name="duration"
+            hint='Example: "60 min / session"'
+            required
+            errors={errors.duration}
+          >
             <TextInput id="duration" name="duration" defaultValue={program.duration} required />
           </Field>
 
           <Field
-            label="Display order"
+            label="Order on the website"
             name="sortOrder"
-            hint="Lower numbers appear first."
+            hint="Lower numbers appear first in lists. Usually leave as-is."
             errors={errors.sortOrder}
           >
             <TextInput
@@ -97,30 +127,24 @@ export default function ProgramForm({ program }: { program: Program }) {
               required
             />
           </Field>
-
-          <div className="flex items-end">
-            <label className="flex items-center gap-2.5 text-sm text-ink">
-              <input
-                type="checkbox"
-                name="isActive"
-                defaultChecked={program.isActive}
-                className="h-4 w-4 rounded border-ink/20 accent-rose-600"
-              />
-              Show on the website
-            </label>
-          </div>
         </div>
 
-        <p className="rounded-lg bg-mist/70 px-3.5 py-2.5 text-xs leading-relaxed text-ink/70">
-          The web address <code className="text-ink/70">/programs/{program.slug}</code> cannot be
-          changed here. It is indexed by search engines and shared in Messenger threads, so
-          renaming it would break existing links.
+        <ToggleField
+          name="isActive"
+          label="Show this program on the website"
+          hint="Turn off to hide it from parents without deleting anything."
+          defaultChecked={program.isActive}
+        />
+
+        <p className="rounded-xl bg-mist/60 px-4 py-3.5 text-sm leading-relaxed text-ink/70">
+          The web link for this program cannot be changed here because it is already on Google and
+          in Messenger messages.
         </p>
 
         <FormStatus state={state} />
 
-        <div className="flex justify-end">
-          <SubmitButton pending={pending}>Save program</SubmitButton>
+        <div className="flex justify-end border-t border-ink/[0.06] pt-6">
+          <SubmitButton pending={pending}>Save program information</SubmitButton>
         </div>
       </form>
     </Card>

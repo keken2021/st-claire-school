@@ -74,11 +74,12 @@ export interface TimelineStep {
   icon: string;
 }
 
-export interface HistoryMilestone {
+export type HistoryMilestone = {
+  id: string;
   year: string;
   title: string;
   description: string;
-}
+};
 
 export type GalleryCategory =
   | "Classes"

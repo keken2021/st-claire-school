@@ -5,13 +5,6 @@ import { Minus, Plus } from "lucide-react";
 import { idleState } from "@/app/admin/action-state";
 import { setEnrolledCount } from "@/app/admin/actions";
 
-/**
- * Enrolled-count stepper.
- *
- * Staff adjust these counts constantly while parents are standing in front of
- * them, so the number updates immediately via useOptimistic and reverts with an
- * explanation if the write is rejected.
- */
 export default function SeatStepper({
   slotId,
   enrolledCount,
@@ -42,7 +35,7 @@ export default function SeatStepper({
 
       const result = await setEnrolledCount(idleState, formData);
       if (result.status === "error") {
-        setError(result.message ?? "Could not save that change.");
+        setError(result.message ?? "Could not save. Please try again.");
       }
     });
   };
@@ -51,40 +44,43 @@ export default function SeatStepper({
 
   return (
     <div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"
           onClick={() => change(-1)}
           disabled={optimisticCount === 0}
-          aria-label="One fewer student enrolled"
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-ink/12 text-ink/70 hover:border-rose-300 hover:text-rose-700 disabled:opacity-40"
+          aria-label="Remove one student"
+          className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-ink/12 bg-white text-ink transition-colors hover:border-rose-300 hover:bg-rose-50 disabled:opacity-40"
         >
-          <Minus size={14} />
+          <Minus size={22} strokeWidth={2.5} aria-hidden />
         </button>
 
-        <span className="min-w-24 text-center text-sm tabular-nums text-ink">
-          <span className="font-semibold">{optimisticCount}</span>
-          <span className="text-ink/65"> / {capacity} enrolled</span>
-        </span>
+        <div className="min-w-[140px] rounded-xl bg-mist/50 px-5 py-3 text-center">
+          <p className="text-2xl font-bold tabular-nums text-ink">{optimisticCount}</p>
+          <p className="text-sm text-ink/65">of {capacity} enrolled</p>
+        </div>
 
         <button
           type="button"
           onClick={() => change(1)}
           disabled={optimisticCount >= capacity}
-          aria-label="One more student enrolled"
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-ink/12 text-ink/70 hover:border-rose-300 hover:text-rose-700 disabled:opacity-40"
+          aria-label="Add one student"
+          className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-ink/12 bg-white text-ink transition-colors hover:border-rose-300 hover:bg-rose-50 disabled:opacity-40"
         >
-          <Plus size={14} />
+          <Plus size={22} strokeWidth={2.5} aria-hidden />
         </button>
       </div>
 
-      <p aria-live="polite" className="mt-1 text-xs text-ink/65">
+      <p aria-live="polite" className="mt-3 text-base text-ink/70">
         {error ? (
-          <span className="text-rose-700">{error}</span>
+          <span className="font-medium text-rose-700">{error}</span>
         ) : open > 0 ? (
-          `${open} ${open === 1 ? "seat" : "seats"} shown as Available`
+          <>
+            <strong className="text-emerald-700">{open}</strong> open{" "}
+            {open === 1 ? "seat shows" : "seats show"} as &ldquo;Available&rdquo; on the website
+          </>
         ) : (
-          "No Available badge — parents can still enquire"
+          "Class is full — parents can still message you to enquire"
         )}
       </p>
     </div>

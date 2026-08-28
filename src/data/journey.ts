@@ -1,4 +1,4 @@
-import type { StatItem, TimelineStep, HistoryMilestone } from "@/types";
+import type { HistoryMilestone, StatItem, TimelineStep } from "@/types";
 
 export const stats: StatItem[] = [
   { id: "years", value: 10, suffix: "+", label: "Years of Excellence" },
@@ -41,35 +41,41 @@ export const studentJourney: TimelineStep[] = [
   },
 ];
 
+
 export const history: HistoryMilestone[] = [
   {
-    year: "2014",
-    title: "A Small Studio, A Big Dream",
+    id: "dream-takes-root",
+    year: "2011",
+    title: "A Dream Takes Root",
     description:
-      "St. Claire opens its doors in Minglanilla with a handful of piano and voice students and one simple belief: every child has a talent worth discovering.",
+      "St. Claire begins with a simple dream: to create a place where talents are nurtured, hearts are inspired, and every learner grows in skill, character, and faith.",
   },
   {
-    year: "2017",
-    title: "Expanding the Stage",
+    id: "guided-to-a-name",
+    year: "2011",
+    title: "Guided to a Name",
     description:
-      "Violin, guitar, and ballet join the roster as enrollment grows, along with the school's first full-scale student recital.",
+      "Originally registered as Rhyscabz Music School, the school’s name was changed after the family prayed for guidance. On Saint Clare’s Feast Day, her name came to them unexpectedly—a moment they received as a beautiful sign of divine providence.",
   },
   {
-    year: "2019",
-    title: "A Home for the Performing Arts",
+    id: "doors-open",
+    year: "2011",
+    title: "Our Doors Open",
     description:
-      "The school moves into a larger facility with dedicated studios for music, dance, and drama, built for focused, joyful learning.",
+      "St. Claire School of Music and Performing Arts officially opens at Gee Ann Je Arcade in Calajoan, Minglanilla, Cebu, beginning its mission of nurturing young talents through music and the performing arts.",
   },
   {
-    year: "2022",
-    title: "Milestones on Stage",
+    id: "new-home",
+    year: "2016",
+    title: "A New Home",
     description:
-      "St. Claire students begin competing and performing at regional showcases, bringing home recognition and renewed pride.",
+      "As the school community grows, St. Claire moves to its present home on the second floor of Rose Pharmacy in Ward 1, Poblacion, Minglanilla—across from the town plaza and along the main road.",
   },
   {
+    id: "today",
     year: "Today",
-    title: "500+ Students Strong",
+    title: "Learn. Create. Shine.",
     description:
-      "A thriving community of students, families, and teachers, still guided by the same mission that opened our doors.",
+      "Now St. Claire School of Performing Arts and Centre of Learning, we continue to nurture talent, character, and faith—guided by the same spirit of trust and gratitude that began our journey.",
   },
 ];

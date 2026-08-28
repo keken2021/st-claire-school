@@ -30,11 +30,11 @@ export default async function LoginPage() {
             height={56}
             className="h-14 w-14 object-contain"
           />
-          <h1 className="mt-4 font-display text-2xl font-semibold tracking-display text-white">
-            Staff Sign In
+          <h1 className="mt-4 font-display text-2xl font-semibold tracking-display text-white sm:text-3xl">
+            Website Manager
           </h1>
-          <p className="mt-1.5 text-sm text-white/50">
-            {site.shortName} content and schedule management
+          <p className="mt-2 text-base text-white/60">
+            Sign in to update {site.shortName}&apos;s website
           </p>
         </div>
 

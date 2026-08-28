@@ -5,7 +5,22 @@ import { Trash2 } from "lucide-react";
 import type { TuitionTier } from "@/types";
 import { deleteTuitionTier, upsertTuitionTier } from "@/app/admin/actions";
 import { idleState } from "@/app/admin/action-state";
-import { Card, Field, FormStatus, SectionTitle, SubmitButton, TextInput } from "./ui";
+import {
+  AddNewSection,
+  Card,
+  Field,
+  FormStatus,
+  StepBadge,
+  SubmitButton,
+  TextInput,
+} from "./ui";
+
+const CADENCE_OPTIONS = [
+  "per month",
+  "per session",
+  "per term",
+  "per package",
+];
 
 export default function TuitionEditor({
   programId,
@@ -16,46 +31,58 @@ export default function TuitionEditor({
 }) {
   return (
     <Card>
-      <SectionTitle hint="Rates shown on the program page and in its structured data.">
-        Tuition
-      </SectionTitle>
+      <StepBadge step={3} label="Prices & fees" />
+      <p className="-mt-2 mb-6 text-base text-ink/70">
+        What parents pay for this program. You can list more than one option (for example Private
+        and Group).
+      </p>
 
       {tiers.length === 0 ? (
-        <p className="rounded-lg bg-mist/70 px-4 py-3 text-sm text-ink/70">
-          No rates published. The program page will omit the tuition section entirely.
+        <p className="rounded-xl bg-mist/60 px-5 py-4 text-base text-ink/75">
+          No prices listed yet. Add one below — otherwise the program page will not show fees.
         </p>
       ) : (
-        <ul className="space-y-3">
-          {tiers.map((tier) => (
+        <ul className="space-y-5">
+          {tiers.map((tier, index) => (
             <li key={tier.id}>
-              <TierRow tier={tier} programId={programId} />
+              <TierRow tier={tier} programId={programId} index={index + 1} />
             </li>
           ))}
         </ul>
       )}
 
-      <div className="mt-6 border-t border-ink/[0.08] pt-6">
+      <AddNewSection
+        title="Add a new price"
+        description='Example: name "Private", amount 4000, billed "per month".'
+      >
         <TierForm programId={programId} />
-      </div>
+      </AddNewSection>
     </Card>
   );
 }
 
-function TierRow({ tier, programId }: { tier: TuitionTier; programId: string }) {
+function TierRow({
+  tier,
+  programId,
+  index,
+}: {
+  tier: TuitionTier;
+  programId: string;
+  index: number;
+}) {
   const [deleteState, deleteAction, deletePending] = useActionState(deleteTuitionTier, idleState);
 
   return (
-    <div className="rounded-xl border border-ink/[0.08] p-4">
+    <div className="rounded-2xl border-2 border-ink/[0.08] bg-mist/20 p-5 sm:p-6">
+      <p className="mb-4 text-base font-semibold text-ink">
+        Price option {index}: {tier.name} — ₱{tier.amount.toLocaleString()} {tier.cadence}
+      </p>
       <TierForm programId={programId} tier={tier} />
-      <form action={deleteAction} className="mt-2 flex justify-end">
+      <form action={deleteAction} className="mt-4 flex justify-end border-t border-ink/[0.06] pt-4">
         <input type="hidden" name="id" value={tier.id} />
-        <button
-          type="submit"
-          disabled={deletePending}
-          className="inline-flex items-center gap-1.5 text-xs font-medium text-ink/65 hover:text-rose-700 disabled:opacity-50"
-        >
-          <Trash2 size={13} /> {deletePending ? "Removing…" : "Remove rate"}
-        </button>
+        <SubmitButton pending={deletePending} variant="danger">
+          <Trash2 size={18} aria-hidden /> Remove this price
+        </SubmitButton>
       </form>
       <FormStatus state={deleteState} />
     </div>
@@ -68,11 +95,18 @@ function TierForm({ programId, tier }: { programId: string; tier?: TuitionTier }
   const suffix = tier?.id ?? "new";
 
   return (
-    <form action={formAction} className="grid gap-3 sm:grid-cols-5">
+    <form action={formAction} className="grid gap-4 sm:grid-cols-2">
       <input type="hidden" name="programId" value={programId} />
       {tier && <input type="hidden" name="id" value={tier.id} />}
+      <input type="hidden" name="sortOrder" value={tier?.sortOrder ?? 99} />
 
-      <Field label="Label" name={`tuition-name-${suffix}`} errors={errors.name}>
+      <Field
+        label="Price name"
+        name={`tuition-name-${suffix}`}
+        hint='Example: "Private" or "Group"'
+        required
+        errors={errors.name}
+      >
         <TextInput
           id={`tuition-name-${suffix}`}
           name="name"
@@ -82,7 +116,12 @@ function TierForm({ programId, tier }: { programId: string; tier?: TuitionTier }
         />
       </Field>
 
-      <Field label="Amount (₱)" name={`tuition-amount-${suffix}`} errors={errors.amount}>
+      <Field
+        label="Amount in pesos (₱)"
+        name={`tuition-amount-${suffix}`}
+        required
+        errors={errors.amount}
+      >
         <TextInput
           id={`tuition-amount-${suffix}`}
           name="amount"
@@ -93,16 +132,32 @@ function TierForm({ programId, tier }: { programId: string; tier?: TuitionTier }
         />
       </Field>
 
-      <Field label="Cadence" name={`tuition-cadence-${suffix}`} errors={errors.cadence}>
+      <Field
+        label="How often is this paid?"
+        name={`tuition-cadence-${suffix}`}
+        required
+        errors={errors.cadence}
+      >
         <TextInput
           id={`tuition-cadence-${suffix}`}
           name="cadence"
+          list={`cadence-options-${suffix}`}
           defaultValue={tier?.cadence ?? "per month"}
           required
         />
+        <datalist id={`cadence-options-${suffix}`}>
+          {CADENCE_OPTIONS.map((option) => (
+            <option key={option} value={option} />
+          ))}
+        </datalist>
       </Field>
 
-      <Field label="Note" name={`tuition-note-${suffix}`} errors={errors.note}>
+      <Field
+        label="Extra note (optional)"
+        name={`tuition-note-${suffix}`}
+        hint='Example: "Eight 60-minute sessions"'
+        errors={errors.note}
+      >
         <TextInput
           id={`tuition-note-${suffix}`}
           name="note"
@@ -111,15 +166,11 @@ function TierForm({ programId, tier }: { programId: string; tier?: TuitionTier }
         />
       </Field>
 
-      <div className="flex items-end gap-2">
-        <input type="hidden" name="sortOrder" value={tier?.sortOrder ?? 99} />
-        <SubmitButton pending={pending} variant={tier ? "quiet" : "primary"}>
-          {tier ? "Save rate" : "Add rate"}
-        </SubmitButton>
-      </div>
-
-      <div className="sm:col-span-5">
+      <div className="sm:col-span-2 space-y-4 border-t border-ink/[0.06] pt-5">
         <FormStatus state={state} />
+        <SubmitButton pending={pending} variant={tier ? "quiet" : "primary"}>
+          {tier ? "Save this price" : "Add price"}
+        </SubmitButton>
       </div>
     </form>
   );

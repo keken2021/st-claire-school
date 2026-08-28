@@ -18,7 +18,7 @@ test.describe("admin", () => {
     await page.goto("/login");
     await page.getByLabel("Email").fill(email!);
     await page.getByLabel("Password").fill("definitely-not-the-password");
-    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.getByRole("button", { name: /Sign in/i }).click();
 
     await expect(page.getByText("Those details did not match an account.")).toBeVisible();
     await expect(page).toHaveURL(/\/login/);
@@ -29,7 +29,7 @@ test.describe("admin", () => {
       await page.goto("/login");
       await page.getByLabel("Email").fill(email!);
       await page.getByLabel("Password").fill(password!);
-      await page.getByRole("button", { name: "Sign in" }).click();
+      await page.getByRole("button", { name: /Sign in/i }).click();
       await expect(page).toHaveURL(/\/admin$/);
     });
 
@@ -43,7 +43,7 @@ test.describe("admin", () => {
       const original = await description.inputValue();
 
       await description.fill(`${marker} ${original}`.slice(0, 400));
-      await page.getByRole("button", { name: "Save program" }).click();
+      await page.getByRole("button", { name: "Save program information" }).click();
       await expect(page.getByText("Program saved.")).toBeVisible();
 
       // Prove the write hit the database (admin is force-dynamic).
@@ -60,14 +60,14 @@ test.describe("admin", () => {
       // Leave the fixture as we found it.
       await page.goto("/admin/programs/piano");
       await page.getByLabel("Short description").fill(original);
-      await page.getByRole("button", { name: "Save program" }).click();
+      await page.getByRole("button", { name: "Save program information" }).click();
       await expect(page.getByText("Program saved.")).toBeVisible();
     });
 
     test("refuses to enrol more students than a class has seats", async ({ page }) => {
       await page.goto("/admin/programs/piano");
 
-      const capacity = page.getByLabel("Capacity").first();
+      const capacity = page.getByLabel("Maximum students").first();
       await capacity.fill("2");
 
       const enrolled = page.locator('input[name="enrolledCount"]').first();
@@ -75,7 +75,7 @@ test.describe("admin", () => {
         node.value = "40";
       });
 
-      await page.getByRole("button", { name: "Save time" }).first().click();
+      await page.getByRole("button", { name: "Save this class time" }).first().click();
 
       await expect(page.getByText("Enrolled cannot exceed capacity.")).toBeVisible();
     });
@@ -83,8 +83,8 @@ test.describe("admin", () => {
     test("the insights dashboard loads without any recorded events", async ({ page }) => {
       await page.goto("/admin/insights");
 
-      await expect(page.getByRole("heading", { name: "Inquiry Insights" })).toBeVisible();
-      await expect(page.getByText(/no names, no contact details/i)).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Website Activity" })).toBeVisible();
+      await expect(page.getByText(/no names or phone numbers/i)).toBeVisible();
     });
   });
 });

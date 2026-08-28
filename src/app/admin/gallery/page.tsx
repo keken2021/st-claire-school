@@ -1,35 +1,42 @@
 import { GALLERY_DIR } from "@/lib/gallery-files";
-import { Card } from "@/components/admin/ui";
+import { Card, HelpBox, PageHeader } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 
 export default function AdminGalleryPage() {
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold tracking-display text-ink">Gallery</h1>
-      <p className="mt-1.5 text-sm text-ink/70">
-        Photos are not stored in the database. Add files on disk and they appear on the public
-        gallery page.
-      </p>
+      <PageHeader
+        title="Photo Gallery"
+        description="Photos on the gallery page are loaded from files on the computer — not uploaded through this screen. Follow the steps below or ask your developer to add pictures for you."
+      />
 
-      <Card className="mt-6 space-y-3 text-sm text-ink/80 leading-relaxed">
-        <p className="font-medium text-ink">How to add photos</p>
-        <ol className="list-decimal space-y-2 pl-5">
+      <HelpBox title="How to add photos (for your developer)">
+        This website manager does not upload photos directly. Someone with access to the project
+        files adds images to the gallery folder, then refreshes the site.
+      </HelpBox>
+
+      <Card className="mt-8 space-y-5">
+        <p className="text-lg font-semibold text-ink">Step-by-step</p>
+        <ol className="list-decimal space-y-4 pl-6 text-base leading-relaxed text-ink/80">
           <li>
-            Put image files in{" "}
-            <code className="rounded bg-mist px-1.5 py-0.5 text-xs">public/images/gallery/</code>
+            Save photo files (JPG or PNG) into the gallery folder on the computer that hosts the
+            website.
           </li>
           <li>
-            Optional: use a category subfolder such as{" "}
-            <code className="rounded bg-mist px-1.5 py-0.5 text-xs">Classes</code>,{" "}
-            <code className="rounded bg-mist px-1.5 py-0.5 text-xs">Events</code>, or{" "}
-            <code className="rounded bg-mist px-1.5 py-0.5 text-xs">Student Performances</code>
+            Optional: put photos in subfolders named{" "}
+            <strong>Classes</strong>, <strong>Events</strong>, or{" "}
+            <strong>Student Performances</strong> so they group nicely on the page.
           </li>
-          <li>Redeploy or refresh the site — no admin upload or database row needed</li>
+          <li>
+            Refresh or redeploy the website — new photos appear automatically. No button to press
+            here.
+          </li>
         </ol>
-        <p className="text-xs text-ink/65">
-          Expected path on this machine: <code className="break-all">{GALLERY_DIR}</code>
-        </p>
+        <div className="rounded-xl bg-mist/60 px-4 py-3.5 text-sm text-ink/65">
+          <p className="font-medium text-ink/80">Folder location on this computer:</p>
+          <p className="mt-1 break-all font-mono text-xs sm:text-sm">{GALLERY_DIR}</p>
+        </div>
       </Card>
     </div>
   );

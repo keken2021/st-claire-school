@@ -8,10 +8,10 @@ export default function LoginForm() {
   const [state, formAction, pending] = useActionState(signInWithCredentials, null);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-5">
       <div>
-        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
-          Email
+        <label htmlFor="email" className="mb-2 block text-base font-semibold text-ink">
+          Email address
         </label>
         <input
           id="email"
@@ -19,12 +19,12 @@ export default function LoginForm() {
           type="email"
           autoComplete="username"
           required
-          className="w-full rounded-lg border border-ink/12 bg-white px-4 py-2.5 text-sm text-ink outline-none focus:border-rose-400"
+          className="w-full rounded-xl border-2 border-ink/10 bg-white px-4 py-3.5 text-base text-ink outline-none transition-colors focus:border-rose-400 focus:ring-2 focus:ring-rose-100"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-ink">
+        <label htmlFor="password" className="mb-2 block text-base font-semibold text-ink">
           Password
         </label>
         <input
@@ -33,12 +33,15 @@ export default function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          className="w-full rounded-lg border border-ink/12 bg-white px-4 py-2.5 text-sm text-ink outline-none focus:border-rose-400"
+          className="w-full rounded-xl border-2 border-ink/10 bg-white px-4 py-3.5 text-base text-ink outline-none transition-colors focus:border-rose-400 focus:ring-2 focus:ring-rose-100"
         />
       </div>
 
       {state?.error && (
-        <p role="alert" className="rounded-lg bg-rose-50 px-3.5 py-2.5 text-sm text-rose-700">
+        <p
+          role="alert"
+          className="rounded-xl border-2 border-rose-200 bg-rose-50 px-4 py-3.5 text-base font-medium text-rose-800"
+        >
           {state.error}
         </p>
       )}
@@ -46,9 +49,9 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-rose-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-rose-700 disabled:opacity-60"
+        className="inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-rose-600 px-5 py-3.5 text-base font-semibold text-white transition-colors hover:bg-rose-700 disabled:opacity-60"
       >
-        <LogIn size={16} strokeWidth={1.75} />
+        <LogIn size={20} strokeWidth={2} aria-hidden />
         {pending ? "Signing in…" : "Sign in"}
       </button>
     </form>

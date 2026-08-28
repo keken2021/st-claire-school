@@ -5,12 +5,28 @@ import { Trash2 } from "lucide-react";
 import type { ClassSlot } from "@/types";
 import { createSlot, retireSlot, updateSlot } from "@/app/admin/actions";
 import { idleState } from "@/app/admin/action-state";
-import { DAY_NAMES, minutesToTimeValue } from "@/lib/schedule";
+import { DAY_NAMES, formatSlot, minutesToTimeValue } from "@/lib/schedule";
 import SeatStepper from "./SeatStepper";
-import { Card, Field, FormStatus, SectionTitle, Select, SubmitButton, TextInput } from "./ui";
+import {
+  AddNewSection,
+  Card,
+  Field,
+  FormStatus,
+  Select,
+  StepBadge,
+  SubmitButton,
+  TextInput,
+} from "./ui";
 
-/** Only the days the school is open, so a class cannot be scheduled on a Monday. */
 const OPEN_DAYS = [3, 5, 6];
+
+const DURATION_OPTIONS = [
+  { value: 30, label: "30 minutes" },
+  { value: 45, label: "45 minutes" },
+  { value: 60, label: "1 hour (60 min)" },
+  { value: 90, label: "1 hour 30 min" },
+  { value: 120, label: "2 hours" },
+];
 
 export default function SlotEditor({
   programId,
@@ -24,38 +40,42 @@ export default function SlotEditor({
 
   return (
     <Card>
-      <SectionTitle hint="Class times parents see on the program page, with live seat counts.">
-        Schedule
-      </SectionTitle>
+      <StepBadge step={2} label="Class schedule" />
+      <p className="-mt-2 mb-6 text-base text-ink/70">
+        Set when classes happen and how many students are enrolled. Parents see open seats on the
+        website.
+      </p>
 
       {active.length === 0 ? (
-        <p className="rounded-lg bg-mist/70 px-4 py-3 text-sm text-ink/70">
-          No class times yet. The program page will invite parents to arrange one by message.
+        <p className="rounded-xl bg-mist/60 px-5 py-4 text-base text-ink/75">
+          No class times yet. Add one below — or parents can message you to arrange a time.
         </p>
       ) : (
-        <ul className="space-y-3">
-          {active.map((slot) => (
+        <ul className="space-y-5">
+          {active.map((slot, index) => (
             <li key={slot.id}>
-              <SlotRow slot={slot} programId={programId} />
+              <SlotRow slot={slot} programId={programId} index={index + 1} />
             </li>
           ))}
         </ul>
       )}
 
-      <div className="mt-6 border-t border-ink/[0.08] pt-6">
+      <AddNewSection
+        title="Add a new class time"
+        description="Pick the day, start time, length, and maximum students. Press “Add class time” when ready."
+      >
         <NewSlotForm programId={programId} />
-      </div>
+      </AddNewSection>
 
       {retired.length > 0 && (
-        <details className="mt-6 border-t border-ink/[0.08] pt-4">
-          <summary className="cursor-pointer text-sm font-medium text-ink/70">
-            {retired.length} retired class {retired.length === 1 ? "time" : "times"}
+        <details className="mt-8 rounded-xl border-2 border-ink/10 bg-mist/30 px-5 py-4">
+          <summary className="cursor-pointer text-base font-medium text-ink/70">
+            {retired.length} old class {retired.length === 1 ? "time" : "times"} (hidden from site)
           </summary>
-          <ul className="mt-3 space-y-1.5 text-sm text-ink/65">
+          <ul className="mt-4 space-y-2 text-sm text-ink/65">
             {retired.map((slot) => (
               <li key={slot.id}>
-                {DAY_NAMES[slot.dayOfWeek]} {minutesToTimeValue(slot.startMinutes)} — hidden from
-                the site, kept for reporting
+                {formatSlot(slot)} — kept for records only
               </li>
             ))}
           </ul>
@@ -65,18 +85,31 @@ export default function SlotEditor({
   );
 }
 
-function SlotRow({ slot, programId }: { slot: ClassSlot; programId: string }) {
+function SlotRow({
+  slot,
+  programId,
+  index,
+}: {
+  slot: ClassSlot;
+  programId: string;
+  index: number;
+}) {
   const [state, formAction, pending] = useActionState(updateSlot, idleState);
   const [retireState, retireAction, retirePending] = useActionState(retireSlot, idleState);
   const errors = state.fieldErrors ?? {};
 
   return (
-    <div className="rounded-xl border border-ink/[0.08] p-4">
-      <form action={formAction} className="grid gap-3 sm:grid-cols-4">
+    <div className="rounded-2xl border-2 border-ink/[0.08] bg-mist/20 p-5 sm:p-6">
+      <p className="mb-4 text-base font-semibold text-ink">
+        Class time {index}: {formatSlot(slot)}
+      </p>
+
+      <form action={formAction} className="grid gap-4 sm:grid-cols-2">
         <input type="hidden" name="id" value={slot.id} />
         <input type="hidden" name="programId" value={programId} />
+        <input type="hidden" name="enrolledCount" value={slot.enrolledCount} />
 
-        <Field label="Day" name={`day-${slot.id}`} errors={errors.dayOfWeek}>
+        <Field label="Day of the week" name={`day-${slot.id}`} errors={errors.dayOfWeek}>
           <Select id={`day-${slot.id}`} name="dayOfWeek" defaultValue={slot.dayOfWeek}>
             {OPEN_DAYS.map((day) => (
               <option key={day} value={day}>
@@ -86,7 +119,7 @@ function SlotRow({ slot, programId }: { slot: ClassSlot; programId: string }) {
           </Select>
         </Field>
 
-        <Field label="Start" name={`start-${slot.id}`} errors={errors.startTime}>
+        <Field label="Class starts at" name={`start-${slot.id}`} errors={errors.startTime}>
           <TextInput
             id={`start-${slot.id}`}
             name="startTime"
@@ -95,19 +128,26 @@ function SlotRow({ slot, programId }: { slot: ClassSlot; programId: string }) {
           />
         </Field>
 
-        <Field label="Minutes" name={`length-${slot.id}`} errors={errors.durationMin}>
-          <TextInput
+        <Field label="Class length" name={`length-${slot.id}`} errors={errors.durationMin}>
+          <Select
             id={`length-${slot.id}`}
             name="durationMin"
-            type="number"
-            min={15}
-            max={240}
-            step={5}
             defaultValue={slot.durationMin}
-          />
+          >
+            {DURATION_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
         </Field>
 
-        <Field label="Capacity" name={`capacity-${slot.id}`} errors={errors.capacity}>
+        <Field
+          label="Maximum students"
+          name={`capacity-${slot.id}`}
+          hint="How many students can join this class."
+          errors={errors.capacity}
+        >
           <TextInput
             id={`capacity-${slot.id}`}
             name="capacity"
@@ -118,40 +158,35 @@ function SlotRow({ slot, programId }: { slot: ClassSlot; programId: string }) {
           />
         </Field>
 
-        {/* Kept in the form so capacity edits validate against the current count. */}
-        <input type="hidden" name="enrolledCount" value={slot.enrolledCount} />
-
-        <div className="sm:col-span-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="sm:col-span-2 rounded-xl border-2 border-ink/10 bg-white p-4">
+          <p className="mb-3 text-base font-semibold text-ink">Students enrolled</p>
           <SeatStepper
             slotId={slot.id}
             enrolledCount={slot.enrolledCount}
             capacity={slot.capacity}
           />
-          <SubmitButton pending={pending} variant="quiet">
-            Save time
-          </SubmitButton>
         </div>
 
         {errors.enrolledCount?.length ? (
-          <p role="alert" className="sm:col-span-4 text-xs text-rose-700">
+          <p role="alert" className="sm:col-span-2 text-sm font-medium text-rose-700">
             {errors.enrolledCount[0]}
           </p>
         ) : null}
+
+        <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-4 border-t border-ink/[0.06] pt-5">
+          <FormStatus state={state} />
+          <SubmitButton pending={pending} variant="quiet">
+            Save this class time
+          </SubmitButton>
+        </div>
       </form>
 
-      <div className="mt-2 flex items-center justify-between gap-3">
-        <FormStatus state={state} />
-        <form action={retireAction}>
-          <input type="hidden" name="id" value={slot.id} />
-          <button
-            type="submit"
-            disabled={retirePending}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-ink/65 hover:text-rose-700 disabled:opacity-50"
-          >
-            <Trash2 size={13} /> {retirePending ? "Retiring…" : "Retire"}
-          </button>
-        </form>
-      </div>
+      <form action={retireAction} className="mt-4 flex justify-end border-t border-ink/[0.06] pt-4">
+        <input type="hidden" name="id" value={slot.id} />
+        <SubmitButton pending={retirePending} variant="danger">
+          <Trash2 size={18} aria-hidden /> Remove this class time
+        </SubmitButton>
+      </form>
       <FormStatus state={retireState} />
     </div>
   );
@@ -162,11 +197,11 @@ function NewSlotForm({ programId }: { programId: string }) {
   const errors = state.fieldErrors ?? {};
 
   return (
-    <form action={formAction} className="grid gap-3 sm:grid-cols-5">
+    <form action={formAction} className="grid gap-4 sm:grid-cols-2">
       <input type="hidden" name="programId" value={programId} />
       <input type="hidden" name="enrolledCount" value={0} />
 
-      <Field label="Day" name="new-day" errors={errors.dayOfWeek}>
+      <Field label="Day of the week" name="new-day" errors={errors.dayOfWeek}>
         <Select id="new-day" name="dayOfWeek" defaultValue={6}>
           {OPEN_DAYS.map((day) => (
             <option key={day} value={day}>
@@ -176,24 +211,26 @@ function NewSlotForm({ programId }: { programId: string }) {
         </Select>
       </Field>
 
-      <Field label="Start" name="new-start" errors={errors.startTime}>
+      <Field label="Class starts at" name="new-start" errors={errors.startTime}>
         <TextInput id="new-start" name="startTime" type="time" defaultValue="09:00" required />
       </Field>
 
-      <Field label="Minutes" name="new-length" errors={errors.durationMin}>
-        <TextInput
-          id="new-length"
-          name="durationMin"
-          type="number"
-          min={15}
-          max={240}
-          step={5}
-          defaultValue={60}
-          required
-        />
+      <Field label="Class length" name="new-length" errors={errors.durationMin}>
+        <Select id="new-length" name="durationMin" defaultValue={60}>
+          {DURATION_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
       </Field>
 
-      <Field label="Capacity" name="new-capacity" errors={errors.capacity}>
+      <Field
+        label="Maximum students"
+        name="new-capacity"
+        hint="How many students can join."
+        errors={errors.capacity}
+      >
         <TextInput
           id="new-capacity"
           name="capacity"
@@ -205,12 +242,9 @@ function NewSlotForm({ programId }: { programId: string }) {
         />
       </Field>
 
-      <div className="flex items-end">
-        <SubmitButton pending={pending}>Add time</SubmitButton>
-      </div>
-
-      <div className="sm:col-span-5">
+      <div className="sm:col-span-2 space-y-4">
         <FormStatus state={state} />
+        <SubmitButton pending={pending}>Add class time</SubmitButton>
       </div>
     </form>
   );
